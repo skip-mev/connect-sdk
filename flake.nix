@@ -26,6 +26,29 @@
             binaryen
           ];
         };
+        packages.default = pkgs.stdenv.mkDerivation {
+          pname = "connect-sdk-examples";
+          version = "0.1.0";
+
+          src = ./.;
+
+          buildInputs = with pkgs; [
+            rust
+            binaryen
+          ];
+
+          buildPhase = ''
+            cargo wasm
+          '';
+
+          installPhase = ''
+            mkdir -p $out/artifacts
+            for wasm in ./target/wasm32-unknown-unknown/release/*.wasm; do
+              out_file=$(basename $wasm)
+              wasm-opt -Os --signext-lowering $wasm -o "$out/artifacts/$out_file"
+            done
+          '';
+        };
       }
     );
 }

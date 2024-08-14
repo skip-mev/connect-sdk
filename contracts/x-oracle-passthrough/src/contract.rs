@@ -31,7 +31,7 @@ pub fn query(
             to_json_binary(&query_price(deps, base, quote)?)
         }
         QueryMsg::Prices { currency_pair_ids } => {
-            to_json_binary(&query_prices(deps.into(), currency_pair_ids)?)
+            to_json_binary(&query_prices(deps, currency_pair_ids)?)
         }
         QueryMsg::CurrencyPairs {} => {
             to_json_binary(&query_currency_pairs(deps)?)
