@@ -5,10 +5,20 @@ use connect_sdk::bindings::oracle::query::{
 use connect_sdk::bindings::querier::ConnectQuerier;
 #[cfg(not(feature = "library"))]
 use cosmwasm_std::entry_point;
-use cosmwasm_std::to_json_binary;
+use cosmwasm_std::{to_json_binary, DepsMut, Empty, MessageInfo, Response};
 use cosmwasm_std::{Binary, Deps, Env, StdResult};
 
 use connect_sdk::bindings::query::ConnectQuery;
+
+#[cfg_attr(not(feature = "library"), entry_point)]
+pub fn instantiate(
+    _deps: DepsMut<ConnectQuery>,
+    _env: Env,
+    _info: MessageInfo,
+    _msg: Empty,
+) -> StdResult<Response> {
+    Ok(Response::default())
+}
 
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn query(

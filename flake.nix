@@ -23,6 +23,7 @@
         devShells.default = with pkgs; mkShell {
           buildInputs = [
             rust
+            binaryen
           ];
         };
       }
