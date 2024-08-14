@@ -1,4 +1,4 @@
-use cosmwasm_std::{QuerierWrapper, StdResult};
+use cosmwasm_std::{QuerierWrapper, QueryRequest, StdResult};
 
 use super::{
     marketmap::query::{
@@ -16,7 +16,6 @@ pub struct ConnectQuerier<'a> {
     querier: &'a QuerierWrapper<'a, ConnectQuery>,
 }
 
-#[cfg(not(feature = "stargate"))]
 impl<'a> ConnectQuerier<'a> {
     pub fn new(querier: &'a QuerierWrapper<ConnectQuery>) -> Self {
         ConnectQuerier { querier }
@@ -27,9 +26,9 @@ impl<'a> ConnectQuerier<'a> {
         base: String,
         quote: String,
     ) -> StdResult<GetPriceResponse> {
-        let request = ConnectQuery::Oracle(OracleQuery::GetPrice {
+        let request: QueryRequest<ConnectQuery> = OracleQuery::GetPrice {
             currency_pair: super::oracle::types::CurrencyPair { base, quote },
-        });
+        }.into();
         self.querier.query::<GetPriceResponse>(&request.into())
     }
 
@@ -37,31 +36,31 @@ impl<'a> ConnectQuerier<'a> {
         &self,
         currency_pair_ids: Vec<String>,
     ) -> StdResult<GetPricesResponse> {
-        let request =
-            ConnectQuery::Oracle(OracleQuery::GetPrices { currency_pair_ids });
+        let request: QueryRequest<ConnectQuery> =
+            OracleQuery::GetPrices { currency_pair_ids }.into();
         self.querier.query::<GetPricesResponse>(&request.into())
     }
 
     pub fn get_oracle_all_currency_pairs(
         &self,
     ) -> StdResult<GetAllCurrencyPairsResponse> {
-        let request = ConnectQuery::Oracle(OracleQuery::GetAllCurrencyPairs {});
+        let request: QueryRequest<ConnectQuery> = OracleQuery::GetAllCurrencyPairs {}.into();
         self.querier
             .query::<GetAllCurrencyPairsResponse>(&request.into())
     }
 
     pub fn get_marketmap_params(&self) -> StdResult<ParamsResponse> {
-        let request = ConnectQuery::MarketMap(MarketMapQuery::Params {});
+        let request: QueryRequest<ConnectQuery> = MarketMapQuery::Params {}.into();
         self.querier.query::<ParamsResponse>(&request.into())
     }
 
     pub fn get_marketmap_last_updated(&self) -> StdResult<LastUpdatedResponse> {
-        let request = ConnectQuery::MarketMap(MarketMapQuery::LastUpdated {});
+        let request:QueryRequest<ConnectQuery>  = MarketMapQuery::LastUpdated {}.into();
         self.querier.query::<LastUpdatedResponse>(&request.into())
     }
 
     pub fn get_marketmap_market_map(&self) -> StdResult<MarketMapResponse> {
-        let request = ConnectQuery::MarketMap(MarketMapQuery::MarketMap {});
+        let request: QueryRequest<ConnectQuery> = MarketMapQuery::MarketMap {}.into();
         self.querier.query::<MarketMapResponse>(&request.into())
     }
 
@@ -70,76 +69,12 @@ impl<'a> ConnectQuerier<'a> {
         base: String,
         quote: String,
     ) -> StdResult<MarketResponse> {
-        let request = ConnectQuery::MarketMap(MarketMapQuery::Market {
+        let request: QueryRequest<ConnectQuery> = MarketMapQuery::Market {
             currency_pair: super::marketmap::types::CurrencyPair {
                 base,
                 quote,
             },
-        });
-        self.querier.query::<MarketResponse>(&request.into())
-    }
-}
-
-#[cfg(feature = "stargate")]
-impl<'a> ConnectQuerier<'a> {
-    pub fn new(querier: &'a QuerierWrapper<ConnectQuery>) -> Self {
-        ConnectQuerier { querier }
-    }
-
-    pub fn get_oracle_price(
-        &self,
-        base: String,
-        quote: String,
-    ) -> StdResult<GetPriceResponse> {
-        let request = ConnectQuery::Oracle(OracleQuery::GetPrice {
-            currency_pair: super::oracle::types::CurrencyPair { base, quote },
-        });
-        self.querier.query::<GetPriceResponse>(&request.into())
-    }
-
-    pub fn get_oracle_prices(
-        &self,
-        currency_pair_ids: Vec<String>,
-    ) -> StdResult<GetPricesResponse> {
-        let request =
-            ConnectQuery::Oracle(OracleQuery::GetPrices { currency_pair_ids });
-        self.querier.query::<GetPricesResponse>(&request.into())
-    }
-
-    pub fn get_oracle_all_currency_pairs(
-        &self,
-    ) -> StdResult<GetAllCurrencyPairsResponse> {
-        let request = ConnectQuery::Oracle(OracleQuery::GetAllCurrencyPairs {});
-        self.querier
-            .query::<GetAllCurrencyPairsResponse>(&request.into())
-    }
-
-    pub fn get_marketmap_params(&self) -> StdResult<ParamsResponse> {
-        let request = ConnectQuery::MarketMap(MarketMapQuery::Params {});
-        self.querier.query::<ParamsResponse>(&request.into())
-    }
-
-    pub fn get_marketmap_last_updated(&self) -> StdResult<LastUpdatedResponse> {
-        let request = ConnectQuery::MarketMap(MarketMapQuery::LastUpdated {});
-        self.querier.query::<LastUpdatedResponse>(&request.into())
-    }
-
-    pub fn get_marketmap_market_map(&self) -> StdResult<MarketMapResponse> {
-        let request = ConnectQuery::MarketMap(MarketMapQuery::MarketMap {});
-        self.querier.query::<MarketMapResponse>(&request.into())
-    }
-
-    pub fn get_marketmap_market(
-        &self,
-        base: String,
-        quote: String,
-    ) -> StdResult<MarketResponse> {
-        let request = ConnectQuery::MarketMap(MarketMapQuery::Market {
-            currency_pair: super::marketmap::types::CurrencyPair {
-                base,
-                quote,
-            },
-        });
+        }.into();
         self.querier.query::<MarketResponse>(&request.into())
     }
 }

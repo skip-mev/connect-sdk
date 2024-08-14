@@ -60,13 +60,13 @@ impl From<OracleQuery> for QueryRequest<ConnectQuery> {
         let data = to_json_binary(&msg).unwrap();
         let path = match msg {
             OracleQuery::GetAllCurrencyPairs {} => {
-                "/slinky.marketmap.v1.Query/Params".to_string()
+                "/slinky.oracle.v1.Query/GetAllCurrencyPairs".to_string()
             }
             OracleQuery::GetPrice { .. } => {
-                "/slinky.marketmap.v1.Query/LastUpdated".to_string()
+                "/slinky.oracle.v1.Query/GetPrice".to_string()
             }
             OracleQuery::GetPrices { .. } => {
-                "/slinky.marketmap.v1.Query/MarketMap".to_string()
+                "/slinky.oracle.v1.Query/GetPrices".to_string()
             }
         };
 
