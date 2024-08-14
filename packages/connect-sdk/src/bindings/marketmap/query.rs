@@ -1,5 +1,5 @@
+use crate::bindings::marketmap::types::CurrencyPair;
 use crate::bindings::marketmap::types::{Market, MarketMap, Params};
-use crate::bindings::oracle::types::CurrencyPair;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 

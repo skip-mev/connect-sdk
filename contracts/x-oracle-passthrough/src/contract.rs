@@ -1,23 +1,27 @@
 use crate::msg::QueryMsg;
 use connect_sdk::bindings::oracle::query::{
     GetAllCurrencyPairsResponse, GetPriceResponse, GetPricesResponse,
-    OracleQuery,
 };
+use connect_sdk::bindings::querier::ConnectQuerier;
 #[cfg(not(feature = "library"))]
 use cosmwasm_std::entry_point;
 use cosmwasm_std::to_json_binary;
-use cosmwasm_std::{Binary, Deps, Env, QueryRequest, StdResult};
+use cosmwasm_std::{Binary, Deps, Env, StdResult};
 
 use connect_sdk::bindings::query::ConnectQuery;
 
 #[cfg_attr(not(feature = "library"), entry_point)]
-pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
+pub fn query(
+    deps: Deps<ConnectQuery>,
+    _env: Env,
+    msg: QueryMsg,
+) -> StdResult<Binary> {
     match msg {
         QueryMsg::Price { base, quote } => {
             to_json_binary(&query_price(deps, base, quote)?)
         }
         QueryMsg::Prices { currency_pair_ids } => {
-            to_json_binary(&query_prices(deps, currency_pair_ids)?)
+            to_json_binary(&query_prices(deps.into(), currency_pair_ids)?)
         }
         QueryMsg::CurrencyPairs {} => {
             to_json_binary(&query_currency_pairs(deps)?)
@@ -25,21 +29,29 @@ pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
     }
 }
 
-fn query_currency_pairs(deps: Deps) -> StdResult<GetAllCurrencyPairsResponse> {
-    todo!()
+fn query_currency_pairs(
+    deps: Deps<ConnectQuery>,
+) -> StdResult<GetAllCurrencyPairsResponse> {
+    let connect_querier = ConnectQuerier::new(&deps.querier);
+
+    connect_querier.get_oracle_all_currency_pairs()
 }
 
 fn query_prices(
-    deps: Deps,
+    deps: Deps<ConnectQuery>,
     currency_pair_ids: Vec<String>,
 ) -> StdResult<GetPricesResponse> {
-    todo!()
+    let connect_querier = ConnectQuerier::new(&deps.querier);
+
+    connect_querier.get_oracle_prices(currency_pair_ids)
 }
 
 fn query_price(
-    deps: Deps,
+    deps: Deps<ConnectQuery>,
     base: String,
     quote: String,
 ) -> StdResult<GetPriceResponse> {
-    todo!()
+    let connect_querier = ConnectQuerier::new(&deps.querier);
+
+    connect_querier.get_oracle_price(base, quote)
 }
