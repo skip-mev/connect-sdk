@@ -35,16 +35,16 @@ impl From<MarketMapQuery> for QueryRequest<ConnectQuery> {
         let data = to_json_binary(&msg).unwrap();
         let path = match msg {
             MarketMapQuery::Params {} => {
-                "/slinky.marketmap.v1.Query/Params".to_string()
+                "/connect.marketmap.v2.Query/Params".to_string()
             }
             MarketMapQuery::LastUpdated {} => {
-                "/slinky.marketmap.v1.Query/LastUpdated".to_string()
+                "/connect.marketmap.v2.Query/LastUpdated".to_string()
             }
             MarketMapQuery::MarketMap {} => {
-                "/slinky.marketmap.v1.Query/MarketMap".to_string()
+                "/connect.marketmap.v2.Query/MarketMap".to_string()
             }
             MarketMapQuery::Market { .. } => {
-                "/slinky.marketmap.v1.Query/Market".to_string()
+                "/connect.marketmap.v2.Query/Market".to_string()
             }
         };
 
@@ -60,13 +60,13 @@ impl From<OracleQuery> for QueryRequest<ConnectQuery> {
         let data = to_json_binary(&msg).unwrap();
         let path = match msg {
             OracleQuery::GetAllCurrencyPairs {} => {
-                "/slinky.oracle.v1.Query/GetAllCurrencyPairs".to_string()
+                "/connect.oracle.v2.Query/GetAllCurrencyPairs".to_string()
             }
             OracleQuery::GetPrice { .. } => {
-                "/slinky.oracle.v1.Query/GetPrice".to_string()
+                "/connect.oracle.v2.Query/GetPrice".to_string()
             }
             OracleQuery::GetPrices { .. } => {
-                "/slinky.oracle.v1.Query/GetPrices".to_string()
+                "/connect.oracle.v2.Query/GetPrices".to_string()
             }
         };
 
