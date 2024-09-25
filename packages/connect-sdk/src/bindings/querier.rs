@@ -23,11 +23,10 @@ impl<'a> ConnectQuerier<'a> {
 
     pub fn get_oracle_price(
         &self,
-        base: String,
-        quote: String,
+        currency_pair: String
     ) -> StdResult<GetPriceResponse> {
         let request: QueryRequest<ConnectQuery> = OracleQuery::GetPrice {
-            currency_pair: super::oracle::types::CurrencyPair { base, quote },
+            currency_pair,
         }.into();
         self.querier.query::<GetPriceResponse>(&request.into())
     }

@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 #[serde(rename_all = "snake_case")]
 pub enum OracleQuery {
     GetAllCurrencyPairs {},
-    GetPrice { currency_pair: CurrencyPair },
+    GetPrice { currency_pair: String },
     GetPrices { currency_pair_ids: Vec<String> },
 }
 
