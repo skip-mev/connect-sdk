@@ -7,7 +7,6 @@ use connect_sdk::bindings::querier::ConnectQuerier;
 use cosmwasm_std::entry_point;
 use cosmwasm_std::{to_json_binary, DepsMut, Empty, MessageInfo, Response};
 use cosmwasm_std::{Binary, Deps, Env, StdResult};
-use connect_sdk::bindings::oracle::types::CurrencyPair;
 use connect_sdk::bindings::query::ConnectQuery;
 
 #[cfg_attr(not(feature = "library"), entry_point)]
