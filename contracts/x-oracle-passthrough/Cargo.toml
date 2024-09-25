@@ -1,6 +1,6 @@
 [package]
 name = "x-oracle-passthrough"
-version = "0.1.0"
+version = "0.2.0"
 authors = [ "Wesley Coakley <wesley@skip.money>" ]
 edition = "2021"
 

@@ -7,7 +7,6 @@ use connect_sdk::bindings::querier::ConnectQuerier;
 use cosmwasm_std::entry_point;
 use cosmwasm_std::{to_json_binary, DepsMut, Empty, MessageInfo, Response};
 use cosmwasm_std::{Binary, Deps, Env, StdResult};
-
 use connect_sdk::bindings::query::ConnectQuery;
 
 #[cfg_attr(not(feature = "library"), entry_point)]
@@ -27,8 +26,8 @@ pub fn query(
     msg: QueryMsg,
 ) -> StdResult<Binary> {
     match msg {
-        QueryMsg::Price { base, quote } => {
-            to_json_binary(&query_price(deps, base, quote)?)
+        QueryMsg::Price { currency_pair } => {
+            to_json_binary(&query_price(deps, currency_pair)?)
         }
         QueryMsg::Prices { currency_pair_ids } => {
             to_json_binary(&query_prices(deps, currency_pair_ids)?)
@@ -58,10 +57,9 @@ fn query_prices(
 
 fn query_price(
     deps: Deps<ConnectQuery>,
-    base: String,
-    quote: String,
+    currency_pair: String
 ) -> StdResult<GetPriceResponse> {
     let connect_querier = ConnectQuerier::new(&deps.querier);
 
-    connect_querier.get_oracle_price(base, quote)
+    connect_querier.get_oracle_price(currency_pair)
 }
